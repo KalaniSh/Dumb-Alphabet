@@ -1,23 +1,31 @@
 import string
 
-def generator(max:int, file, prefix:str="", pi:int=0, i:int=0):
-    realMax = 26**2 + 26 # This is not ideal, I want to go forever!
+def generator(max:int, file, alphabet = string.ascii_uppercase):
+    mod = len(alphabet)
+    piList = [0]
 
-    alphabet = string.ascii_uppercase
 
-    for n in range(26):
-        if i >= max or i >= realMax:
-            return
-        s = prefix + alphabet[n] + "\n"
-        i += 1
-        file.write(s)
 
-    generator(max, file, alphabet[pi], (pi+1)%26, i)
+    for i in range(max):
+        print(piList)
+
+        piList[-1] += 1
+
+        if len(piList) > 1:
+            for j in range(len(piList)-1, 1, -1):
+                if j == mod:
+                    piList[j] = 0
+                    piList[j-1] += 1
+
+        if piList[0] == mod:
+            for n in range(len(piList)):
+                piList[n] = 0
+            piList.append(0)
 
 # -------------------
 
 file = open("thingo.txt", "w")
 
-generator(71000, file)
+generator(1000, file)
 
 file.close()
